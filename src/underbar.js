@@ -322,7 +322,23 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var storage={};
+    
+    return function() {
+      var key = Array.prototype.slice.call(arguments);
+      if(JSON.stringify(key) in storage) {
+        console.log('returning from storage');
+        return storage[JSON.stringify(key)];
+      }
+      else {
+        storage[JSON.stringify(key)] = func.apply(this,arguments);
+        console.log('running function');
+        return storage[JSON.stringify(key)];
+      }
+    };
   };
+    
+    
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
